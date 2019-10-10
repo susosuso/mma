@@ -10,7 +10,7 @@ $MMAexe = "MMASetup-AMD64.exe"
 $logfile = "C:\Users\$env:USERNAME\mma-install.log"
 
 Write-Output "Downloading MMA from $MMADownloadPath as $MMAexe..." >> $logfile
-Invoke-WebRequest -Uri $MMADownloadPath -OutFile $MMAexe
+Invoke-WebRequest -Uri $MMADownloadPath -OutFile $MMAexe -UseBasicParsing
 
 Write-Output "Running $MMAexe ..." >> $logfile
 & $MMAexe /c /t:$mmaDir
