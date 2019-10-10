@@ -3,13 +3,13 @@ param(
     [parameter(Mandatory=$true)] $workspaceId
 )
 
-
 $MMADownloadPath = "https://github.com/susosuso/mma/raw/master/MMASetup-AMD64.exe"
 $mmaDir = "C:\Users\$env:USERNAME\MMA"
-$MMAexe = "MMASetup-AMD64.exe"
+$MMAexe = ".\MMASetup-AMD64.exe"
 $logfile = "C:\Users\$env:USERNAME\mma-install.log"
 
 Write-Output "Downloading MMA from $MMADownloadPath as $MMAexe..." >> $logfile
+[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
 Invoke-WebRequest -Uri $MMADownloadPath -OutFile $MMAexe -UseBasicParsing
 
 Write-Output "Running $MMAexe ..." >> $logfile
