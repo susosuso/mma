@@ -4,9 +4,9 @@ param(
 )
 
 $MMADownloadPath = "https://github.com/susosuso/mma/raw/master/MMASetup-AMD64.exe"
-$mmaDir = "C:\Users\$env:USERNAME\MMA"
+$mmaDir = "C:\MMA"
 $MMAexe = ".\MMASetup-AMD64.exe"
-$logfile = "C:\Users\$env:USERNAME\mma-install.log"
+$logfile = "C:\mma-install.log"
 
 Write-Output "Downloading MMA from $MMADownloadPath as $MMAexe..." >> $logfile
 [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
