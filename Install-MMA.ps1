@@ -7,6 +7,7 @@ $MMADownloadPath = "https://github.com/susosuso/mma/raw/master/MMASetup-AMD64.ex
 $mmaDir = "C:\MMA"
 $MMAexe = ".\MMASetup-AMD64.exe"
 $logfile = "C:\mma-install.log"
+Write-Output "$(Get-Date)"
 Write-Output "workspaceId is $workspaceId" >> $logfile
 
 Write-Output "Downloading MMA from $MMADownloadPath as $MMAexe..." >> $logfile
