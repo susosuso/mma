@@ -1,6 +1,7 @@
 param(
     [parameter(Mandatory=$true)] $workspaceKey, 
-    [parameter(Mandatory=$true)] $workspaceId
+    [parameter(Mandatory=$true)] $workspaceId,
+    [parameter(Mandatory=$false)] $foo
 )
 
 $MMADownloadPath = "https://github.com/susosuso/mma/raw/master/MMASetup-AMD64.exe"
