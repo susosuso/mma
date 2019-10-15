@@ -35,6 +35,7 @@ if (Test-Path ".\Setup.exe") {
 }
 else {
     Write-Output ".\Setup.exe is NOT in $mmaDir after $retry retries. Abort." >> $logfile
+    exit
 }
 
 dir *>> $logfile 
@@ -53,9 +54,23 @@ else{
 
 if ($unsign) {
     Start-Sleep -Seconds 3
-    Write-Output "Setting 'EnableSignatureValidation' to 'False" >> $logfile
-    Set-Location $($(dir HkLM:\SOFTWARE\Microsoft\HybridRunbookWorker).Name -replace 'HKEY_LOCAL_MACHINE','HKLM:')
-    Set-ItemProperty -Path . -Name 'EnableSignatureValidation' -Value 'False'
+    $retry = 0;
+    $regPath = "HkLM:\SOFTWARE\Microsoft\HybridRunbookWorker"
+    while ((!test-path $regPath) -and $retry -lt 5) {
+        Write-Output "$regPath does not exist. Wait for 5 sec. Attempt $retry" >> $logfile
+        $retry++;
+        Start-Sleep -Seconds 5
+    }
+
+    if (test-path $regPath) {
+        Write-Output "Setting 'EnableSignatureValidation' to 'False'" >> $logfile
+        Set-Location $($(dir $regPath).Name -replace 'HKEY_LOCAL_MACHINE','HKLM:')
+        Set-ItemProperty -Path . -Name 'EnableSignatureValidation' -Value 'False'
+    }
+    else {
+        Write-Output "$regPath does not exist after $retry retries. Abort." >> $logfile
+        exit
+    }
 }
 
 Write-Output "Done." >> $logfile
