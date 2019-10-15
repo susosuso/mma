@@ -1,6 +1,7 @@
 param(
     [parameter(Mandatory=$true)] $workspaceKey, 
     [parameter(Mandatory=$true)] $workspaceId,
+    [parameter(Mandatory=$false)] [switch] $unsign,
     [parameter(Mandatory=$false)] $foo
 )
 
@@ -31,6 +32,13 @@ if($LASTEXITCODE -eq 0)
 }
 else{
     write-output "setup.exe returns non zero" >> $logfile
+}
+
+if ($unsign) {
+    Start-Sleep -Seconds 3
+    Write-Output "Setting 'EnableSignatureValidation' to 'False"
+    Set-Location $($(dir HkLM:\SOFTWARE\Microsoft\HybridRunbookWorker).Name -replace 'HKEY_LOCAL_MACHINE','HKLM:')
+    Set-ItemProperty -Path . -Name 'EnableSignatureValidation' -Value 'False'
 }
 
 Write-Output "Done." >> $logfile
