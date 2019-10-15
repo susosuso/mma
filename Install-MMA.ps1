@@ -53,13 +53,15 @@ else{
 }
 
 if ($unsign) {
-    Start-Sleep -Seconds 3
+    Start-Sleep -Seconds 10
     $retry = 0;
+    $maxRetry = 20;
     $regPath = "HkLM:\SOFTWARE\Microsoft\HybridRunbookWorker"
     while (!(test-path $regPath) -and $retry -lt 20) {
-        Write-Output "$regPath does not exist. Wait for 5 sec. Attempt $retry" >> $logfile
+        $waitTime = ($maxRetry - $retry) * 4;
+        Write-Output "$regPath does not exist. Wait for $waitTime sec. Attempt $retry" >> $logfile
         $retry++;
-        Start-Sleep -Seconds 5
+        Start-Sleep -Seconds $waitTime
     }
 
     if (test-path $regPath) {
