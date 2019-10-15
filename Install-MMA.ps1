@@ -24,7 +24,7 @@ Start-Sleep -Seconds 3
 Set-Location $mmaDir
 
 $retry = 0
-while ((!Test-Path ".\Setup.exe") -and ($retry -lt 5)) {
+while (!(Test-Path ".\Setup.exe") -and ($retry -lt 5)) {
     Write-Output ".\Setup.exe is not in $mmaDir. Wait for 5 sec. Attempt $retry" >> $logfile
     $retry++;
     Start-Sleep -Seconds 5
@@ -56,7 +56,7 @@ if ($unsign) {
     Start-Sleep -Seconds 3
     $retry = 0;
     $regPath = "HkLM:\SOFTWARE\Microsoft\HybridRunbookWorker"
-    while ((!test-path $regPath) -and $retry -lt 5) {
+    while (!(test-path $regPath) -and $retry -lt 5) {
         Write-Output "$regPath does not exist. Wait for 5 sec. Attempt $retry" >> $logfile
         $retry++;
         Start-Sleep -Seconds 5
