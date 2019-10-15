@@ -22,7 +22,24 @@ Write-Output "Running $MMAexe ..." >> $logfile
 Start-Sleep -Seconds 3
 
 Set-Location $mmaDir
+
+$retry = 0
+while ((!Test-Path ".\Setup.exe") -and ($retry -lt 5)) {
+    Write-Output ".\Setup.exe is not in $mmaDir. Wait for 5 sec. Attempt $retry" >> $logfile
+    $retry++;
+    Start-Sleep -Seconds 5
+}
+
+if (Test-Path ".\Setup.exe") {
+    Write-Output ".\Setup.exe is in $mmaDir :)" >> $logfile
+}
+else {
+    Write-Output ".\Setup.exe is NOT in $mmaDir after $retry retries. Abort." >> $logfile
+}
+
 dir *>> $logfile 
+
+
 Write-Output "Runnig setup.exe ..." *>> $logfile
 & .\Setup.exe /qn NOAPM=1 ADD_OPINSIGHTS_WORKSPACE=1 OPINSIGHTS_WORKSPACE_AZURE_CLOUD_TYPE=0 OPINSIGHTS_WORKSPACE_ID="$workspaceId" OPINSIGHTS_WORKSPACE_KEY="$workspaceKey" AcceptEndUserLicenseAgreement=1
 
@@ -36,7 +53,7 @@ else{
 
 if ($unsign) {
     Start-Sleep -Seconds 3
-    Write-Output "Setting 'EnableSignatureValidation' to 'False"
+    Write-Output "Setting 'EnableSignatureValidation' to 'False" >> $logfile
     Set-Location $($(dir HkLM:\SOFTWARE\Microsoft\HybridRunbookWorker).Name -replace 'HKEY_LOCAL_MACHINE','HKLM:')
     Set-ItemProperty -Path . -Name 'EnableSignatureValidation' -Value 'False'
 }
